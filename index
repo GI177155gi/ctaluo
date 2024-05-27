@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>塔罗牌随机抽取器</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-size: 16px;
+    }
+
+    @media (max-width: 767px) {
+      body {
+        font-size: 18px;
+      }
+    }
+
+    #result {
+      font-size: 1.2em;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="font-size: 30px;">塔罗牌随机抽取器</h1>
+  <div style="display: flex; align-items: center;font-size: 20px;">
+    <label for="card-count">抽取张数:</label>
+    <input style="width: 50px;height: 30px;margin:0 10px ;font-size: 20px;" type="number" id="card-count" value="1" min="1" max="22" style="margin-left: 0.5em;">
+    <button id="draw-cards" style="margin-left: 0.5em;">抽取</button>
+  </div>
+  <div id="result"></div>
+
+  <script>
+    // 定义塔罗牌名称列表
+    const tarotCards = [
+      "愚人（The Fool）", "魔术师（The Magician）", "女祭司（The High Priestess）", "皇后（The Empress）", "皇帝（The Emperor）",
+      "教皇（The Hierophant）", "恋人（The Lovers）", "战车（The Chariot）", "力量（Strength）", "隐者（The Hermit）",
+      "命运之轮（Wheel of Fortune）", "正义（Justice）", "倒吊人（The Hanged Man）", "死神（Death）", "节制（Temperance）",
+      "恶魔（The Devil）", "塔（The Tower）", "星星（The Star）", "月亮（The Moon）", "太阳（The Sun）",
+      "审判（Judgement）", "世界（The World）"
+    ];
+
+    // 随机选择一张塔罗牌,并确保不重复
+    function getUniqueRandomCard(drawnCards) {
+      if (drawnCards.length === tarotCards.length) {
+        return null; // 如果已经抽取完所有牌,返回 null
+      }
+
+      let randomCard;
+      do {
+        randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
+      } while (drawnCards.includes(randomCard));
+      return randomCard;
+    }
+
+    // "抽取"按钮的点击事件监听器
+    $("#draw-cards").click(function() {
+      const cardCount = $("#card-count").val();
+      const cards = [];
+
+      for (let i = 0; i < cardCount; i++) {
+        const randomCard = getUniqueRandomCard(cards);
+        if (randomCard === null) {
+          break; // 如果已经抽取完所有牌,跳出循环
+        }
+        cards.push(randomCard);
+      }
+
+      $("#result").html("抽取结果:<br>" + cards.join("<br>"));
+    });
+  </script>
+</body>
+</html>
